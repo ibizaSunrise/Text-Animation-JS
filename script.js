@@ -19,8 +19,24 @@ window.addEventListener('mousemove', function (e) {
 
 ctx.fillStyle = 'white';
 ctx.font = '30px Verdana';
-ctx.fillText('A', 0, 40);
-ctx.strokeStyle = 'white';
-ctx.strokeRect(0,0,100,100);
+ctx.fillText('A', 0, 30);
 const data = ctx.getImageData(0, 0, 100, 100);
 
+class Particle {
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
+        this.size = 3;
+        this.baseX = this.x;
+        this.baseY = this.y;
+        this.density = (Math.random() * 30) + 1;
+    }
+
+    draw(){
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fill();
+    }
+}
