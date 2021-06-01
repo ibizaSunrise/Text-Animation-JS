@@ -8,12 +8,13 @@ let particleArray = [];
 let mouse = {
     x: null,
     y: null,
-    radius: 150
+    radius: 250
 }
 
 window.addEventListener('mousemove', function (e) {
     mouse.x = e.x;
     mouse.y = e.y;
+    //mouse.radius = 150;
     //console.log(mouse.x, mouse.y)
 });
 
@@ -29,7 +30,7 @@ class Particle {
         this.size = 3;
         this.baseX = this.x;
         this.baseY = this.y;
-        this.density = (Math.random() * 30) + 1;
+        this.density = (Math.random() * 40) + 5;
     }
 
     draw() {
@@ -44,8 +45,28 @@ class Particle {
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
-        distance < 300 ? this.size = 30 : this.size = 3;
+        let forceDirectionX = dx / distance;
+        let forceDirectionY = dy / distance;
+        let maxDistance = mouse.radius;
+        let force = (maxDistance - distance) / maxDistance;
+
+        let directionX = forceDirectionX * force * this.density;
+        let directionY = forceDirectionY * force * this.density;
+        if (distance < mouse.radius) {
+            this.x -= directionX;
+            this.y -= directionY;
+        } else {
+            if (this.x !== this.baseX) {
+                let dx = this.x - this.baseX;
+                this.x -= dx - 10;//dx or dy (original position), dx - something (another position)
+            }
+            if (this.y !== this.baseY) {
+                let dy = this.y - this.baseY;
+                this.y -= dy - 10;
+            }
+        }
     }
+
 }
 
 function init() {
